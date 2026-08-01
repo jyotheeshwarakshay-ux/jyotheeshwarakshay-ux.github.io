@@ -101,14 +101,14 @@ window.SITE_CONTENT = {
         title: "Theophylline-popPK",
         description: "Population PK tutorial model.",
         tags: ["R", "rxode2", "Population PK"],
-        link: "https://github.com/REPLACE_ME/Theophylline-popPK",
+        link: "https://github.com/jyotheeshwarakshay-ux/Theophylline-popPK",
         linkLabel: "View on GitHub"
       },
       {
         title: "tmdd-approximations",
         description: "Target-mediated drug disposition (TMDD) approximation methods.",
         tags: ["R", "rxode2", "TMDD"],
-        link: "https://github.com/REPLACE_ME/tmdd-approximations",
+        link: "https://github.com/jyotheeshwarakshay-ux/tmdd-approximations",
         linkLabel: "View on GitHub"
       },
       {
@@ -116,7 +116,7 @@ window.SITE_CONTENT = {
         description:
           "Denosumab TMDD quasi-steady-state (QSS) parameter-recovery study. Reproduced a published identifiability limitation and ran a profile-likelihood analysis.",
         tags: ["R", "TMDD", "QSS", "Identifiability"],
-        link: "https://github.com/REPLACE_ME/denosumab-tmdd-qss",
+        link: "https://github.com/jyotheeshwarakshay-ux/denosumab-tmdd-qss",
         linkLabel: "View on GitHub"
       },
       {
@@ -124,7 +124,7 @@ window.SITE_CONTENT = {
         description:
           "RANKL–OPG bone-remodeling QSP model with virtual-population biomarker simulation.",
         tags: ["R", "QSP", "Virtual Population"],
-        link: "https://github.com/REPLACE_ME/rankl-opg-qsp",
+        link: "https://github.com/jyotheeshwarakshay-ux/rankl-opg-qsp",
         linkLabel: "View on GitHub"
       }
     ]
@@ -185,12 +185,13 @@ window.SITE_CONTENT = {
   contact: {
     heading: "Contact",
     blurb: "",
-    email: "REPLACE_ME@example.com",
+    email: "", // [PLACEHOLDER] no public email address provided yet
     links: [
-      { label: "GitHub", href: "https://github.com/REPLACE_ME", icon: "github" },
-      { label: "LinkedIn", href: "https://linkedin.com/in/REPLACE_ME", icon: "linkedin" },
-      { label: "ORCID", href: "https://orcid.org/REPLACE_ME", icon: "orcid" },
-      { label: "Google Scholar", href: "https://scholar.google.com/citations?user=REPLACE_ME", icon: "scholar" }
+      { label: "GitHub", href: "https://github.com/jyotheeshwarakshay-ux", icon: "github" },
+      { label: "LinkedIn", href: "https://www.linkedin.com/in/jyotheeshwar-akshay/", icon: "linkedin" },
+      { label: "ORCID", href: "https://orcid.org/0009-0008-1481-4140", icon: "orcid" }
+      // Google Scholar link removed — no profile yet. Re-add as:
+      // { label: "Google Scholar", href: "https://scholar.google.com/citations?user=...", icon: "scholar" }
     ]
   }
 };
