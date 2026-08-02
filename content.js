@@ -18,15 +18,11 @@ window.SITE_CONTENT = {
 
   nav: [
     { label: "About", href: "#about" },
-    { label: "Career Vision", href: "#career-vision" },
     { label: "Education", href: "#education" },
     { label: "Skills", href: "#skills" },
     { label: "Projects", href: "#projects" },
-    { label: "Publications", href: "#publications" },
     { label: "Certifications", href: "#certifications" },
-    { label: "Clinical Experience", href: "#clinical-experience" },
     { label: "Research Interests", href: "#research-interests" },
-    { label: "Roadmap", href: "#roadmap" },
     { label: "Contact", href: "#contact" }
   ],
 
@@ -44,13 +40,6 @@ window.SITE_CONTENT = {
     paragraphs: [
       "I am a final-year Pharm.D. candidate at Sri Ramachandra University (SRIHER), Chennai, graduating in August 2027.",
       "My work centers on mechanistic pharmacokinetic/pharmacodynamic (PK/PD) modeling, target-mediated drug disposition (TMDD), and quantitative systems pharmacology (QSP), primarily using R (rxode2, nlmixr2)."
-    ]
-  },
-
-  careerVision: {
-    heading: "Career Vision",
-    paragraphs: [
-      "[PLACEHOLDER — add your career vision statement here.]"
     ]
   },
 
@@ -130,35 +119,9 @@ window.SITE_CONTENT = {
     ]
   },
 
-  publications: {
-    heading: "Publications",
-    items: [
-      {
-        title: "Manuscript in preparation",
-        authors: "",
-        venue: "In preparation",
-        link: "",
-        linkLabel: ""
-      }
-    ]
-  },
-
   certifications: {
     heading: "Certifications",
     items: []
-  },
-
-  clinicalExperience: {
-    heading: "Clinical Experience",
-    items: [
-      {
-        role: "[PLACEHOLDER]",
-        organization: "[PLACEHOLDER]",
-        location: "[PLACEHOLDER]",
-        period: "[PLACEHOLDER]",
-        description: "[PLACEHOLDER — add clinical experience details.]"
-      }
-    ]
   },
 
   researchInterests: {
@@ -168,17 +131,6 @@ window.SITE_CONTENT = {
       "Target-mediated drug disposition (TMDD)",
       "Quantitative systems pharmacology (QSP)",
       "Pharmacometrics"
-    ]
-  },
-
-  roadmap: {
-    heading: "Roadmap",
-    items: [
-      {
-        period: "[PLACEHOLDER]",
-        title: "[PLACEHOLDER]",
-        description: "[PLACEHOLDER — add roadmap milestones.]"
-      }
     ]
   },
 
