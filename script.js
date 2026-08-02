@@ -198,33 +198,6 @@
     inner.appendChild(grid);
   }
 
-  // ---- Publications ----
-  function renderPublications() {
-    var data = content.publications;
-    var section = document.getElementById("publications");
-    if (!section || !data) return;
-    var inner = sectionInner(section);
-    sectionHeading(inner, data.heading);
-    var list = el("div", { className: "card-list" });
-    (data.items || []).forEach(function (pub) {
-      var card = el("article", { className: "card" });
-      if (isNonEmpty(pub.title)) card.appendChild(el("h3", { className: "card__title", text: pub.title }));
-      if (isNonEmpty(pub.authors)) card.appendChild(el("p", { className: "card__meta", text: pub.authors }));
-      if (isNonEmpty(pub.venue)) card.appendChild(el("p", { className: "card__period", text: pub.venue }));
-      if (isNonEmpty(pub.link)) {
-        card.appendChild(
-          el("a", {
-            className: "card__link",
-            text: pub.linkLabel || "View publication",
-            attrs: { href: pub.link, target: "_blank", rel: "noopener noreferrer" }
-          })
-        );
-      }
-      list.appendChild(card);
-    });
-    inner.appendChild(list);
-  }
-
   // ---- Certifications ----
   function renderCertifications() {
     var data = content.certifications;
@@ -249,26 +222,6 @@
     inner.appendChild(list);
   }
 
-  // ---- Clinical Experience ----
-  function renderClinicalExperience() {
-    var data = content.clinicalExperience;
-    var section = document.getElementById("clinical-experience");
-    if (!section || !data) return;
-    var inner = sectionInner(section);
-    sectionHeading(inner, data.heading);
-    var list = el("div", { className: "card-list" });
-    (data.items || []).forEach(function (item) {
-      var card = el("article", { className: "card" });
-      if (isNonEmpty(item.role)) card.appendChild(el("h3", { className: "card__title", text: item.role }));
-      var metaBits = [item.organization, item.location].filter(isNonEmpty).join(" · ");
-      if (isNonEmpty(metaBits)) card.appendChild(el("p", { className: "card__meta", text: metaBits }));
-      if (isNonEmpty(item.period)) card.appendChild(el("p", { className: "card__period", text: item.period }));
-      if (isNonEmpty(item.description)) card.appendChild(el("p", { className: "card__body", text: item.description }));
-      list.appendChild(card);
-    });
-    inner.appendChild(list);
-  }
-
   // ---- Research Interests ----
   function renderResearchInterests() {
     var data = content.researchInterests;
@@ -281,24 +234,6 @@
       tags.appendChild(el("li", { className: "tag", text: interest }));
     });
     inner.appendChild(tags);
-  }
-
-  // ---- Roadmap ----
-  function renderRoadmap() {
-    var data = content.roadmap;
-    var section = document.getElementById("roadmap");
-    if (!section || !data) return;
-    var inner = sectionInner(section);
-    sectionHeading(inner, data.heading);
-    var list = el("ol", { className: "timeline" });
-    (data.items || []).forEach(function (item) {
-      var li = el("li", { className: "timeline__item" });
-      if (isNonEmpty(item.period)) li.appendChild(el("span", { className: "timeline__period", text: item.period }));
-      if (isNonEmpty(item.title)) li.appendChild(el("h3", { className: "timeline__title", text: item.title }));
-      if (isNonEmpty(item.description)) li.appendChild(el("p", { className: "timeline__body", text: item.description }));
-      list.appendChild(li);
-    });
-    inner.appendChild(list);
   }
 
   // ---- Contact ----
@@ -381,6 +316,27 @@
     });
   }
 
+  function setupScrollReveal() {
+    var targets = Array.prototype.slice.call(document.querySelectorAll(".hero, .section"));
+    if (!targets.length) return;
+    if (!("IntersectionObserver" in window)) {
+      targets.forEach(function (t) { t.classList.add("in-view"); });
+      return;
+    }
+    var observer = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("in-view");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.08, rootMargin: "0px 0px -10% 0px" }
+    );
+    targets.forEach(function (t) { observer.observe(t); });
+  }
+
   function setupActiveNavHighlight() {
     var links = Array.prototype.slice.call(document.querySelectorAll(".nav__link"));
     if (!links.length) return;
@@ -415,15 +371,11 @@
     renderNav();
     renderHero();
     renderParagraphSection("about", content.about);
-    renderParagraphSection("career-vision", content.careerVision);
     renderEducation();
     renderSkills();
-    renderProjects();
-    renderPublications();
     renderCertifications();
-    renderClinicalExperience();
     renderResearchInterests();
-    renderRoadmap();
+    renderProjects();
     renderContact();
     renderFooter();
 
@@ -431,6 +383,7 @@
     setupBackToTop();
     setupThemeToggle();
     setupActiveNavHighlight();
+    setupScrollReveal();
   }
 
   if (document.readyState === "loading") {
