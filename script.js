@@ -84,18 +84,60 @@
     });
   }
 
+  // ---- Brand (header) ----
+  function renderBrand() {
+    var node = document.getElementById("brandName");
+    var name = (content.hero && content.hero.name) || (content.meta && content.meta.author) || "";
+    if (node) {
+      node.textContent = name;
+      if (node.parentNode) node.parentNode.setAttribute("aria-label", name + " — home");
+    }
+  }
+
   // ---- Hero ----
+  // Decorative concentration-time graphic shown when no portrait is provided.
+  var HERO_PLOT =
+    '<svg class="hero__plot" viewBox="0 0 360 260" aria-hidden="true" focusable="false">' +
+    '<path class="plot__axis" d="M40 24 V220 H334" />' +
+    '<path class="plot__band" d="M40 214 C66 214 78 48 118 48 C170 48 232 160 322 196" />' +
+    '<path class="plot__band" d="M40 214 C76 214 90 96 128 96 C178 96 236 194 322 210" />' +
+    '<path class="plot__band" d="M40 214 C70 214 84 72 122 72 C174 72 232 178 322 203" />' +
+    '<path class="plot__curve" d="M40 214 C70 214 82 70 120 70 C170 70 230 180 322 206" />' +
+    "</svg>";
+
   function renderHero() {
     var h = content.hero || {};
     var section = document.getElementById("hero");
     if (!section) return;
     var wrap = el("div", { className: "hero__inner" });
-    if (isNonEmpty(h.name)) wrap.appendChild(el("h1", { className: "hero__name", text: h.name, attrs: { id: "hero-name" } }));
-    if (isNonEmpty(h.tagline)) wrap.appendChild(el("p", { className: "hero__tagline", text: h.tagline }));
-    if (isNonEmpty(h.subtext)) wrap.appendChild(el("p", { className: "hero__subtext", text: h.subtext }));
-    if (isNonEmpty(h.ctaLabel) && isNonEmpty(h.ctaHref)) {
-      wrap.appendChild(el("a", { className: "btn btn--primary", text: h.ctaLabel, attrs: { href: h.ctaHref } }));
+    var copy = el("div", { className: "hero__copy" });
+
+    if (isNonEmpty(h.tagline)) {
+      var roles = el("ul", { className: "hero__roles" });
+      h.tagline.split("|").forEach(function (part) {
+        if (isNonEmpty(part)) roles.appendChild(el("li", { text: part.trim() }));
+      });
+      copy.appendChild(roles);
     }
+    if (isNonEmpty(h.name)) copy.appendChild(el("h1", { className: "hero__name", text: h.name, attrs: { id: "hero-name" } }));
+    if (isNonEmpty(h.subtext)) copy.appendChild(el("p", { className: "hero__subtext", text: h.subtext }));
+    if (isNonEmpty(h.ctaLabel) && isNonEmpty(h.ctaHref)) {
+      copy.appendChild(el("a", { className: "btn btn--primary", text: h.ctaLabel, attrs: { href: h.ctaHref } }));
+    }
+    wrap.appendChild(copy);
+
+    var visual = el("div", { className: "hero__visual" });
+    if (isNonEmpty(h.portrait)) {
+      visual.appendChild(
+        el("img", {
+          className: "hero__portrait",
+          attrs: { src: h.portrait, alt: isNonEmpty(h.portraitAlt) ? h.portraitAlt : h.name || "", width: "480", height: "600", fetchpriority: "high" }
+        })
+      );
+    } else {
+      visual.innerHTML = HERO_PLOT;
+    }
+    wrap.appendChild(visual);
     section.appendChild(wrap);
   }
 
@@ -198,6 +240,32 @@
     inner.appendChild(grid);
   }
 
+  // ---- Software releases (DOI list) ----
+  function renderReleases() {
+    var data = content.releases;
+    var section = document.getElementById("releases");
+    if (!section || !data || !isNonEmpty(data.items)) return;
+    var inner = sectionInner(section);
+    sectionHeading(inner, data.heading);
+    var list = el("ol", { className: "pub-list" });
+    data.items.forEach(function (rel) {
+      var li = el("li", { className: "pub" });
+      var url = isNonEmpty(rel.doi) ? "https://doi.org/" + rel.doi : rel.link;
+      if (isNonEmpty(rel.title)) {
+        if (isNonEmpty(url)) {
+          li.appendChild(el("a", { className: "pub__title", text: rel.title, attrs: { href: url, target: "_blank", rel: "noopener noreferrer" } }));
+        } else {
+          li.appendChild(el("span", { className: "pub__title", text: rel.title }));
+        }
+      }
+      var meta = [rel.type, rel.publisher, rel.year].filter(isNonEmpty).join(" · ");
+      if (isNonEmpty(rel.doi)) meta += (meta ? " · " : "") + "DOI " + rel.doi;
+      if (isNonEmpty(meta)) li.appendChild(el("p", { className: "pub__meta", text: meta }));
+      list.appendChild(li);
+    });
+    inner.appendChild(list);
+  }
+
   // ---- Certifications ----
   function renderCertifications() {
     var data = content.certifications;
@@ -278,6 +346,25 @@
     footer.textContent = (isNonEmpty(name) ? name + " · " : "") + "© " + year;
   }
 
+  // ---- Layout cleanup: drop empty sections (and their nav links), then stripe the rest ----
+  function pruneEmptySections() {
+    Array.prototype.slice.call(document.querySelectorAll("main > .section")).forEach(function (s) {
+      if (!s.children.length) s.parentNode.removeChild(s);
+    });
+    Array.prototype.slice.call(document.querySelectorAll(".nav__link")).forEach(function (a) {
+      var href = a.getAttribute("href") || "";
+      if (href.charAt(0) === "#" && href.length > 1 && !document.getElementById(href.slice(1))) {
+        a.parentNode.parentNode.removeChild(a.parentNode);
+      }
+    });
+  }
+
+  function stripeSections() {
+    Array.prototype.slice.call(document.querySelectorAll("main > .section")).forEach(function (s, i) {
+      s.classList.toggle("section--tint", i % 2 === 1);
+    });
+  }
+
   // ---- Behavior: nav toggle, smooth scroll active state, back-to-top, theme ----
   function setupNavToggle() {
     var toggle = document.getElementById("navToggle");
@@ -347,16 +434,20 @@
 
   function init() {
     renderMeta();
+    renderBrand();
     renderNav();
     renderHero();
     renderParagraphSection("about", content.about);
     renderEducation();
     renderSkills();
     renderProjects();
+    renderReleases();
     renderCertifications();
     renderResearchInterests();
     renderContact();
     renderFooter();
+    pruneEmptySections();
+    stripeSections();
 
     setupNavToggle();
     setupBackToTop();

@@ -11,6 +11,10 @@
   <meta property="og:title" content="Jyotheeshwar Akshay Ravikumar — Portfolio" />
   <meta property="og:description" content="Pharm.D. candidate focused on quantitative systems pharmacology and pharmacometrics — mechanistic PK/PD, TMDD, and QSP modeling in R." />
 
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -18,7 +22,13 @@
 
   <header class="site-header">
     <nav class="nav" id="nav" aria-label="Primary">
-      <a class="nav__brand" href="#hero">JAR</a>
+      <a class="nav__brand" href="#hero">
+        <svg class="nav__logo" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
+          <circle cx="24" cy="24" r="24" class="nav__logo-bg" />
+          <path d="M10 34 C 14 34 16 14 21 14 C 28 14 31 30 39 34" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" />
+        </svg>
+        <span class="nav__name" id="brandName"></span>
+      </a>
       <button class="nav__toggle" id="navToggle" aria-expanded="false" aria-controls="navList">
         <span class="sr-only">Toggle navigation menu</span>
         <span class="nav__toggle-bar"></span>
@@ -39,6 +49,7 @@
     <section id="education" class="section"></section>
     <section id="skills" class="section section--alt"></section>
     <section id="projects" class="section"></section>
+    <section id="releases" class="section"></section>
     <section id="certifications" class="section"></section>
     <section id="research-interests" class="section"></section>
     <section id="contact" class="section"></section>
